@@ -16,7 +16,9 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: 'Not Checked', albumArt: '' }
+      nowPlaying: { name: 'Not Checked', albumArt: '' },
+      searchTerm: '',
+      searchResult: [{ song: 'N/A', artist: 'N/A'},{ song: 'N/A', artist: 'N/A'},{ song: 'N/A', artist: 'N/A'}]
     }
   }
   getHashParams() {
@@ -43,6 +45,41 @@ class App extends Component {
       })
       .catch(err => alert(err))
   }
+  
+  getSearchResults(searchString){
+    var searchResult = null;
+    console.log(searchString);
+    searchResult = spotifyApi.searchTracks(searchString, {limit: 10})
+      .then((response) => {
+        /*this.setState({
+          searchResult: {
+            song: response.tracks.items[0].name,
+            artist: response.tracks.items[0].artists[0].name
+          }
+        })*/
+        response.tracks.items.forEach(e => console.log(e.name, e. artists[0].name))
+        console.log(response.tracks.items)
+      })
+      .catch(err => alert(err))
+  }
+
+  //This handles the changing input values in the search box
+  handleChange = event => {
+    this.setState({ searchTerm: event.target.value });
+  };
+
+  renderTableData(){
+    return this.state.searchResult.map((entry, index) => {
+      const {song, artist} = entry
+      return (
+        <tr>
+          <td>{song}</td>
+          <td>{artist}</td>
+        </tr>
+      )
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -58,6 +95,20 @@ class App extends Component {
             Check Now Playing
           </button>
         }
+        <div>
+          <label htmlFor="searchTerm">Search Field</label>
+          <input name = "searchTerm" value = {this.state.searchTerm} onChange = {this.handleChange}/>
+          <button onClick={() => this.getSearchResults(this.state.searchTerm)}>
+            Log Results
+          </button>
+        </div>
+        <div>
+          <table>
+            <tbody>
+              
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }
