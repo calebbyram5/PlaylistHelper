@@ -18,7 +18,8 @@ class App extends Component {
       loggedIn: token ? true : false,
       nowPlaying: { name: 'Not Checked', albumArt: '' },
       searchTerm: '',
-      searchResult: [{ song: 'N/A', artist: 'N/A'},{ song: 'N/A', artist: 'N/A'},{ song: 'N/A', artist: 'N/A'}]
+      searchResult: [{ song: 'N/A', artist: 'N/A'},{ song: 'N/A', artist: 'N/A'},{ song: 'N/A', artist: 'N/A'}],
+      testObject : []
     }
   }
   getHashParams() {
@@ -51,6 +52,7 @@ class App extends Component {
     console.log(searchString);
     searchResult = spotifyApi.searchTracks(searchString, {limit: 10})
       .then((response) => {
+        this.setState({testObject: response})
         /*this.setState({
           searchResult: {
             song: response.tracks.items[0].name,
@@ -103,6 +105,7 @@ class App extends Component {
           </button>
         </div>
         <div>
+          <p>{JSON.stringify(this.state.testObject)}</p>
           <table>
             <tbody>
               
