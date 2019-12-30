@@ -54,7 +54,7 @@ class App extends Component {
       searchResults: []
     })
 
-    searchResults = spotifyApi.searchTracks(searchString, {limit: 10})
+    searchResults = spotifyApi.searchTracks(searchString)
       .then((response) => {
         response.tracks.items.forEach(e => console.log(e.name, e. artists[0].name))
         response.tracks.items.forEach(e =>         
@@ -86,7 +86,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <button className = "login">
         <a href='http://localhost:8888' > Login to Spotify </a>
+        </button>
         <div>
           Now Playing: { this.state.nowPlaying.name }
         </div>
@@ -99,11 +101,12 @@ class App extends Component {
           </button>
         }
         <div>
-          <label htmlFor="searchTerm">Search Field</label>
-          <input name = "searchTerm" value = {this.state.searchTerm} onChange = {this.handleChange}/>
-          <button onClick={() => this.getSearchResults(this.state.searchTerm)}>
-            Log Results
-          </button>
+          <input name = "searchTerm" value = {this.state.searchTerm} onChange = {this.handleChange} placeholder = "Search for artist, song, album..."/>
+          
+            <button onClick={() => this.getSearchResults(this.state.searchTerm)}>
+              Search
+            </button>  
+
         </div>
         <div>
           Search Results: 

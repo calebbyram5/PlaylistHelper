@@ -27,7 +27,43 @@
   to { transform: rotate(360deg); }
 }
 
-
-div, button {
+body{
+  background-color: #121212;
+  color: white;
+  font-family: roboto;
+  margin: 2.5%;
+}
+button{
+  border: 0;
+  border-radius: 500px;
+  text-transform: uppercase;
+  font-weight: 700;
+  white-space: nowrap;
+  background-color: #1ed760;
+  padding: 8px 34px;
+  margin: 10px;
+}
+.login{
+  background-color: white;
+  float: right;
+}
+input{
+  border-radius: 500px;
+  padding: 6px 48px;
+  background-color: -internal-light-dark-color(white, black);
+  border: 0;
+}
+table{
+  border-collapse: collapse;
+  width: 50%;
+}
+th, td{
+  text-align: left;
+  padding: 8px;
+}
+tr:nth-child(even){
+  background-color: #434744;
+}
+div {
   margin: 10px;
 }
