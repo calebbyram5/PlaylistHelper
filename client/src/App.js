@@ -18,8 +18,7 @@ class App extends Component {
       loggedIn: token ? true : false,
       nowPlaying: { name: 'Not Checked', albumArt: '' },
       searchTerm: '',
-      searchResult: [{ song: 'N/A', artist: 'N/A'},{ song: 'N/A', artist: 'N/A'},{ song: 'N/A', artist: 'N/A'}],
-      testObject : []
+      searchResults : []
     }
   }
   getHashParams() {
@@ -48,20 +47,14 @@ class App extends Component {
   }
   
   getSearchResults(searchString){
-    var searchResult = null;
-    console.log(searchString);
-    searchResult = spotifyApi.searchTracks(searchString, {limit: 10})
+    var searchResults = null;
+    searchResults = spotifyApi.searchTracks(searchString, {limit: 10})
       .then((response) => {
-        this.setState({testObject: response})
-        /*this.setState({
-          searchResult: {
-            song: response.tracks.items[0].name,
-            artist: response.tracks.items[0].artists[0].name
-          }
-        })*/
         response.tracks.items.forEach(e => console.log(e.name, e. artists[0].name))
-        //response.tracks.items.forEach(e => {return <div><h1>{e.name, e. artists[0].name}</h1></div>})
-        console.log(response.tracks.items)
+        response.tracks.items.forEach(e =>         
+          this.setState({
+          searchResults: this.state.searchResults.concat({song: e.name, artist: e.artists[0].name})
+        }))
       })
       .catch(err => alert(err))
   }
@@ -72,7 +65,7 @@ class App extends Component {
   };
 
   renderTableData(){
-    return this.state.searchResult.map((entry, index) => {
+    return this.state.searchResults.map((entry, index) => {
       const {song, artist} = entry
       return (
         <tr>
@@ -106,13 +99,9 @@ class App extends Component {
           </button>
         </div>
         <div>
-          <p>{JSON.stringify(this.state.testObject)}</p>
-          {this.state.searchResult.map((item,index) => 
-          <p>{item.song}</p>
-          )}
           <table>
             <tbody>
-              
+              {this.renderTableData()}
             </tbody>
           </table>
         </div>
