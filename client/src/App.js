@@ -48,12 +48,19 @@ class App extends Component {
   
   getSearchResults(searchString){
     var searchResults = null;
+
+    //reset the array when another search is called
+    this.setState({
+      searchResults: []
+    })
+
     searchResults = spotifyApi.searchTracks(searchString, {limit: 10})
       .then((response) => {
         response.tracks.items.forEach(e => console.log(e.name, e. artists[0].name))
         response.tracks.items.forEach(e =>         
           this.setState({
           searchResults: this.state.searchResults.concat({song: e.name, artist: e.artists[0].name})
+          //searchResults: this.state.searchResults({song: e.name, artist: e.artists[0].name})
         }))
       })
       .catch(err => alert(err))
@@ -99,6 +106,7 @@ class App extends Component {
           </button>
         </div>
         <div>
+          Search Results: 
           <table>
             <tbody>
               {this.renderTableData()}
