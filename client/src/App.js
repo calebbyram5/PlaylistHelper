@@ -91,7 +91,7 @@ class App extends Component {
           Now Playing: { this.state.nowPlaying.name }
         </div>
         <div>
-          <img src={this.state.nowPlaying.albumArt} style={{ height: 600 }}/>
+          <img src={this.state.nowPlaying.albumArt} style={{ height: 300 }}/>
         </div>
         { this.state.loggedIn &&
           <button onClick={() => this.getNowPlaying()}>
