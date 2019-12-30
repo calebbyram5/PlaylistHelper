@@ -60,6 +60,7 @@ class App extends Component {
           }
         })*/
         response.tracks.items.forEach(e => console.log(e.name, e. artists[0].name))
+        //response.tracks.items.forEach(e => {return <div><h1>{e.name, e. artists[0].name}</h1></div>})
         console.log(response.tracks.items)
       })
       .catch(err => alert(err))
@@ -106,6 +107,9 @@ class App extends Component {
         </div>
         <div>
           <p>{JSON.stringify(this.state.testObject)}</p>
+          {this.state.searchResult.map((item,index) => 
+          <p>{item.song}</p>
+          )}
           <table>
             <tbody>
               
