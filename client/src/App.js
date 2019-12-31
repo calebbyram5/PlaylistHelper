@@ -57,11 +57,11 @@ class App extends Component {
 
     searchResults = spotifyApi.searchTracks(searchString)
       .then((response) => {
-        response.tracks.items.forEach(e => console.log(e.name, e. artists[0].name))
-        console.log(response.tracks.items);
+        response.tracks.items.forEach(e => console.log(e.name, e. artists[0].name, e.album.images[0]))
+        console.log(response);
         response.tracks.items.forEach(e =>         
           this.setState({
-          searchResults: this.state.searchResults.concat({song: e.name, artist: e.artists[0].name})
+          searchResults: this.state.searchResults.concat({song: e.name, artist: e.artists[0].name, albumArt: e.album.images[0].url})
           //searchResults: this.state.searchResults({song: e.name, artist: e.artists[0].name})
         }))
       })
@@ -75,9 +75,10 @@ class App extends Component {
 
   renderTableData(){
     return this.state.searchResults.map((entry, index) => {
-      const {song, artist} = entry
+      const {song, artist, albumArt} = entry
       return (
         <tr>
+          <td><img src = {albumArt} style={{ height: 65 }}/></td>
           <td>{song}</td>
           <td>{artist}</td>
         </tr>
