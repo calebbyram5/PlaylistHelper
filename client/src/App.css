@@ -28,14 +28,13 @@
 }
 
 body{
-  background-color: #121212;
-  color: white;
+  background-color: #121212 !important;
+  color: white !important;
   font-family: roboto;
-  margin: 2.5%;
 }
-button{
+button {
   border: 0;
-  border-radius: 500px;
+  border-radius: 500px !important;
   text-transform: uppercase;
   font-weight: 700;
   white-space: nowrap;
@@ -59,17 +58,7 @@ input{
   background-color: -internal-light-dark-color(white, black);
   border: 0;
 }
-table{
-  border-collapse: collapse;
-  width: 50%;
-}
-th, td{
-  text-align: left;
-  padding: 8px;
-}
-tr:nth-child(even){
-  background-color: #434744;
-}
+
 div {
   margin: 10px;
 }

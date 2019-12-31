@@ -2,8 +2,9 @@
 
 import React, { Component } from 'react';
 import './App.css';
-
+import {Bootstrap, Grid, Row, Col, Container} from 'react-bootstrap';
 import SpotifyWebApi from 'spotify-web-api-js';
+import 'bootstrap/dist/css/bootstrap.min.css';
 const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
@@ -88,30 +89,41 @@ class App extends Component {
     if(this.state.loggedIn){
       return(
         <div>
-          <div>
-            Now Playing: { this.state.nowPlaying.name }
-          </div>
-          <div>
-            <img src={this.state.nowPlaying.albumArt} style={{ height: 300 }}/>
-          </div>
-          <button onClick={() => this.getNowPlaying()}>
-            Check Now Playing
-          </button>
-          <div>
-            <input name = "searchTerm" value = {this.state.searchTerm} onChange = {this.handleChange} placeholder = "Search for artist, song, album..."/>
-              <button onClick={() => this.getSearchResults(this.state.searchTerm)}>
-              Search
-              </button>  
-          </div>
-          <div>
-            <h2>Search Results:</h2>
-            <table>
-              <tbody>
-                {this.renderTableData()}
-              </tbody>
-            </table>
-          </div>
-          
+          <Container>
+            <Row>
+              <Col>
+                <div>
+                  <input name = "searchTerm" value = {this.state.searchTerm} onChange = {this.handleChange} placeholder = "Search for artist, song, album..."/>
+                  <button onClick={() => this.getSearchResults(this.state.searchTerm)}>
+                  Search
+                  </button>  
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div>
+                  <h3>Search Results:</h3>
+                  <table class = "table table-dark">
+                    <tbody>
+                      {this.renderTableData()}
+                    </tbody>
+                  </table>
+                </div>
+              </Col>
+              <Col> 
+                <div>
+                  Now Playing: { this.state.nowPlaying.name }
+                </div>
+                <div>
+                  <img src={this.state.nowPlaying.albumArt} style={{ height: 300 }}/>
+                </div>
+                <button onClick={() => this.getNowPlaying()}>
+                  Check Now Playing
+                </button>
+              </Col>
+            </Row>
+          </Container>
         </div>
       );
     }else{
