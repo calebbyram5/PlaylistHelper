@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Example of the Authorization Code flow with Spotify</title>
+    <title>Please Log in with Spotify</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <style type="text/css">
       #login, #loggedin {
@@ -18,10 +18,15 @@
 
   <body>
     <div class="container">
-      <div id="login">
-        <h1>This is an example of the Authorization Code flow</h1>
-        <a href="/login" class="btn btn-primary">Log in with Spotify</a>
-      </div>
+      <!-- This auto-redirects user to spotify login when you are directed to :8888 server -->
+      <head>
+        <meta http-equiv='refresh' content='0; "/login"'>
+      </head>
+      <!-- Removed code below which added button to redirect page to login -->
+      <!-- <div id="login">
+        <h1>Please Log in with Spotify</h1>
+        <a href="/login" class="btn btn-success">Log in with Spotify</a>
+      </div> -->
       <div id="loggedin">
         <div id="user-profile">
         </div>
