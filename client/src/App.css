@@ -44,8 +44,14 @@ button{
   margin: 10px;
 }
 .login{
+  font-size: 20px;
+  margin: 0;
   background-color: white;
-  float: right;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
 }
 input{
   border-radius: 500px;
@@ -66,4 +72,8 @@ tr:nth-child(even){
 }
 div {
   margin: 10px;
+}
+a, a:visited {
+  text-decoration: none;
+  color: black;
 }

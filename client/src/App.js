@@ -57,13 +57,14 @@ class App extends Component {
     searchResults = spotifyApi.searchTracks(searchString)
       .then((response) => {
         response.tracks.items.forEach(e => console.log(e.name, e. artists[0].name))
+        console.log(response.tracks.items);
         response.tracks.items.forEach(e =>         
           this.setState({
           searchResults: this.state.searchResults.concat({song: e.name, artist: e.artists[0].name})
           //searchResults: this.state.searchResults({song: e.name, artist: e.artists[0].name})
         }))
       })
-      .catch(err => alert(err))
+      .catch(err => alert(err + "No Song Playing"))
   }
 
   //This handles the changing input values in the search box
@@ -83,39 +84,49 @@ class App extends Component {
     })
   }
 
-  render() {
-    return (
-      <div className="App">
-        <button className = "login">
-        <a href='http://localhost:8888' > Login to Spotify </a>
-        </button>
+  renderBodyHTML(){
+    if(this.state.loggedIn){
+      return(
         <div>
-          Now Playing: { this.state.nowPlaying.name }
-        </div>
-        <div>
-          <img src={this.state.nowPlaying.albumArt} style={{ height: 300 }}/>
-        </div>
-        { this.state.loggedIn &&
+          <div>
+            Now Playing: { this.state.nowPlaying.name }
+          </div>
+          <div>
+            <img src={this.state.nowPlaying.albumArt} style={{ height: 300 }}/>
+          </div>
           <button onClick={() => this.getNowPlaying()}>
             Check Now Playing
           </button>
-        }
-        <div>
-          <input name = "searchTerm" value = {this.state.searchTerm} onChange = {this.handleChange} placeholder = "Search for artist, song, album..."/>
-          
-            <button onClick={() => this.getSearchResults(this.state.searchTerm)}>
+          <div>
+            <input name = "searchTerm" value = {this.state.searchTerm} onChange = {this.handleChange} placeholder = "Search for artist, song, album..."/>
+              <button onClick={() => this.getSearchResults(this.state.searchTerm)}>
               Search
-            </button>  
+              </button>  
+          </div>
+          <div>
+            <h2>Search Results:</h2>
+            <table>
+              <tbody>
+                {this.renderTableData()}
+              </tbody>
+            </table>
+          </div>
+          
+        </div>
+      );
+    }else{
+      return(
+        <button className = "login">
+          <a href='http://localhost:8888' > Login to Spotify </a>
+        </button>
+      );
+    }
+  }
 
-        </div>
-        <div>
-          Search Results: 
-          <table>
-            <tbody>
-              {this.renderTableData()}
-            </tbody>
-          </table>
-        </div>
+  render() {
+    return (
+      <div className="App">
+        {this.renderBodyHTML()}
       </div>
     );
   }
