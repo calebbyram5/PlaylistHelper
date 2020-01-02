@@ -17,7 +17,7 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: 'Not Checked', albumArt: '' },
+      nowPlaying: { name: 'No Song Currently Playing', albumArt: '' },
       searchTerm: '',
       searchResults : []
     }
@@ -43,7 +43,9 @@ class App extends Component {
               albumArt: response.item.album.images[0].url
             }
         });
+        console.log(response);
       })
+      
       .catch(err => alert(err))
   }
   
@@ -61,9 +63,10 @@ class App extends Component {
         console.log(response);
         response.tracks.items.forEach(e =>         
           this.setState({
-          searchResults: this.state.searchResults.concat({song: e.name, artist: e.artists[0].name, albumArt: e.album.images[0].url})
+          searchResults: this.state.searchResults.concat({song: e.name, artist: e.artists[0].name, albumArt: e.album.images[0].url, trackId: e.id})
           //searchResults: this.state.searchResults({song: e.name, artist: e.artists[0].name})
         }))
+        console.log(this.state.searchResults);
       })
       .catch(err => alert(err + "No Song Playing"))
   }
@@ -73,11 +76,28 @@ class App extends Component {
     this.setState({ searchTerm: event.target.value });
   };
 
+  //add clicked song to playlist
+  addTrack = event => {
+    var playlistId = '';
+    var trackId = [];
+    //gets id of track
+    trackId.push(event.currentTarget.id);
+    //gets playlist id from logged in user
+    spotifyApi.getUserPlaylists()
+    .then((response) => {
+      playlistId = response.items[0].id;
+      spotifyApi.addTracksToPlaylist(playlistId, trackId);
+      console.log(playlistId);
+      console.log(trackId);
+
+    });
+  }
+
   renderTableData(){
     return this.state.searchResults.map((entry, index) => {
-      const {song, artist, albumArt} = entry
+      const {song, artist, albumArt, trackId} = entry
       return (
-        <tr>
+        <tr key = {trackId} onClick = {this.addTrack} id = {trackId}>
           <td><img src = {albumArt} style={{ height: 65 }}/></td>
           <td>{song}</td>
           <td>{artist}</td>
@@ -104,7 +124,7 @@ class App extends Component {
             <Row>
               <Col>
                 <div>
-                  <h3>Search Results:</h3>
+                  <h3>Click a song to add it to a playlist</h3>
                   <table class = "table table-dark">
                     <tbody>
                       {this.renderTableData()}

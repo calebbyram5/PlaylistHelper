@@ -66,3 +66,6 @@ a, a:visited {
   text-decoration: none;
   color: black;
 }
+tr:hover {
+  background-color: #444444;
+}
