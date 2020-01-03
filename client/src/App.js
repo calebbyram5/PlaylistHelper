@@ -63,7 +63,7 @@ class App extends Component {
         console.log(response);
         response.tracks.items.forEach(e =>         
           this.setState({
-          searchResults: this.state.searchResults.concat({song: e.name, artist: e.artists[0].name, albumArt: e.album.images[0].url, trackId: e.id})
+          searchResults: this.state.searchResults.concat({song: e.name, artist: e.artists[0].name, albumArt: e.album.images[0].url, trackId: e.uri})
           //searchResults: this.state.searchResults({song: e.name, artist: e.artists[0].name})
         }))
         console.log(this.state.searchResults);
@@ -83,10 +83,14 @@ class App extends Component {
     //gets id of track
     trackId.push(event.currentTarget.id);
     //gets playlist id from logged in user
+
+    spotifyApi.getPlaylistTracks("/me", "4YwThRIhvacUWlZ4gn7wPT")
+    .then((response) => console.log(response));
+
     spotifyApi.getUserPlaylists()
     .then((response) => {
       playlistId = response.items[0].id;
-      spotifyApi.addTracksToPlaylist(playlistId, trackId);
+      spotifyApi.addTracksToPlaylist("/me",playlistId, trackId);
       console.log(playlistId);
       console.log(trackId);
 
