@@ -94,6 +94,11 @@ class App extends Component {
       console.log(playlistId);
       console.log(trackId);
 
+      this.setState({
+        searchTerm: '',
+        searchResults: []
+      })
+
     });
   }
 
