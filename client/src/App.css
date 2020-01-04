@@ -76,5 +76,5 @@ button.grow:hover{
   background-color: #00DA6E;
 }
 
-table#mytableofrows tr td button#hideButton { display:none;}
-table#mytableofrows tr:hover td button#hideButton { display:inline-block;}
+table#mytableofrows tr td button.hideButton { display:none;}
+table#mytableofrows tr:hover td button.hideButton { display:inline-block;}

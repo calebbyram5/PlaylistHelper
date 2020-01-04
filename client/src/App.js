@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import './App.css';
-import {Bootstrap, Grid, Row, Col, Container, Card, Button, CardDeck, CardColumns} from 'react-bootstrap';
+import {Bootstrap, Grid,Alert, Row, Col, Container, Card, Button, CardDeck, CardColumns} from 'react-bootstrap';
 import SpotifyWebApi from 'spotify-web-api-js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 const spotifyApi = new SpotifyWebApi();
@@ -19,7 +19,8 @@ class App extends Component {
       loggedIn: token ? true : false,
       nowPlaying: { name: 'No Song Currently Playing', albumArt: '' },
       searchTerm: '',
-      searchResults : []
+      searchResults : [],
+      successMessage: ''
     }
   }
   getHashParams() {
@@ -93,7 +94,7 @@ class App extends Component {
       spotifyApi.addTracksToPlaylist("/me",playlistId, trackId);
       console.log(playlistId);
       console.log(trackId);
-
+      this.setSuccessMessage('Succesfully Added to Queue');
       this.setState({
         searchTerm: '',
         searchResults: []
@@ -110,7 +111,7 @@ class App extends Component {
           <td><img src = {albumArt} style={{ height: 65 }}/></td>
           <td>{song}</td>
           <td>{artist}</td>
-          <td><button id = 'hideButton' onClick = {this.addTrack} class = "button">+</button></td>
+          <td><button id = {trackId} onClick = {this.addTrack} class = "button hideButton">+</button></td>
         </tr>
       )
     })
@@ -132,10 +133,16 @@ class App extends Component {
     })
   }
 
+  setSuccessMessage(message) {
+    this.setState({
+        successMessage: message
+    });
+  }
   renderBodyHTML(){
     if(this.state.loggedIn){
       return(
         <div>
+        
           <Container>
             <Row>
               <Col>
@@ -184,6 +191,12 @@ class App extends Component {
           <a href='http://localhost:8888' > Login to Spotify </a>
         </button>
       );
+    }
+    if(this.state.successMessage != ''){
+    <Alert variant="success">
+      <Alert.Heading>Successfully added to queue</Alert.Heading>
+      <hr />
+    </Alert>
     }
   }
 
