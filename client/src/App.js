@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import './App.css';
-import {Bootstrap, Grid, Row, Col, Container} from 'react-bootstrap';
+import {Bootstrap, Grid, Row, Col, Container, Card, Button, CardDeck, CardColumns} from 'react-bootstrap';
 import SpotifyWebApi from 'spotify-web-api-js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 const spotifyApi = new SpotifyWebApi();
@@ -106,11 +106,28 @@ class App extends Component {
     return this.state.searchResults.map((entry, index) => {
       const {song, artist, albumArt, trackId} = entry
       return (
-        <tr key = {trackId} onClick = {this.addTrack} id = {trackId}>
+        <tr key = {trackId} id = {trackId}>
           <td><img src = {albumArt} style={{ height: 65 }}/></td>
           <td>{song}</td>
           <td>{artist}</td>
+          <td><button id = 'hideButton' onClick = {this.addTrack} class = "button">+</button></td>
         </tr>
+      )
+    })
+  }
+
+  renderCardData(){
+    return this.state.searchResults.map((entry, index) => {
+      const {song, artist, albumArt, trackId} = entry
+      return (
+      <Card className="bg-dark text-white button" style={{ width: '10rem' }}>
+        <Card.Img variant="top" src= {albumArt}/>
+        <Card.Body>
+          <Card.Title>{artist}</Card.Title>
+          <Card.Text>{song}</Card.Text>
+          <Button variant="primary" onClick = {this.addTrack}  id = {trackId}>Add</Button>
+        </Card.Body>
+      </Card>
       )
     })
   }
@@ -124,7 +141,7 @@ class App extends Component {
               <Col>
                 <div>
                   <input name = "searchTerm" value = {this.state.searchTerm} onChange = {this.handleChange} placeholder = "Search for artist, song, album..."/>
-                  <button onClick={() => this.getSearchResults(this.state.searchTerm)}>
+                  <button className = "grow" onClick={() => this.getSearchResults(this.state.searchTerm)}>
                   Search
                   </button>  
                 </div>
@@ -134,11 +151,16 @@ class App extends Component {
               <Col>
                 <div>
                   <h3>Click a song to add it to a playlist</h3>
-                  <table class = "table table-dark">
+                  <table id = 'mytableofrows' class = "table table-dark">
                     <tbody>
                       {this.renderTableData()}
                     </tbody>
                   </table>
+                </div>
+                <div>
+                  <CardColumns>
+                    {/* {this.renderCardData()} */}
+                  </CardColumns>
                 </div>
               </Col>
               <Col> 
@@ -148,7 +170,7 @@ class App extends Component {
                 <div>
                   <img src={this.state.nowPlaying.albumArt} style={{ height: 300 }}/>
                 </div>
-                <button onClick={() => this.getNowPlaying()}>
+                <button className = "grow" onClick={() => this.getNowPlaying()}>
                   Check Now Playing
                 </button>
               </Col>
