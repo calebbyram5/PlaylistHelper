@@ -17,10 +17,12 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: 'No Song Currently Playing', albumArt: '' },
+      nowPlaying: { name: 'No Song Currently Playing', albumArt: '', uri: [] },
       searchTerm: '',
       searchResults : [],
-      successMessage: ''
+      successMessage: '',
+      QueuePlaylistTracks: [],
+      LastQueueItem: []
     }
   }
   getHashParams() {
@@ -41,7 +43,8 @@ class App extends Component {
         this.setState({
           nowPlaying: { 
               name: response.item.name, 
-              albumArt: response.item.album.images[0].url
+              albumArt: response.item.album.images[0].url,
+              uri: response.item.uri
             }
         });
         console.log(response);
@@ -52,6 +55,7 @@ class App extends Component {
   
   getSearchResults(searchString){
     var searchResults = null;
+    var PlaylistTracks = null;
 
     //reset the array when another search is called
     this.setState({
@@ -70,6 +74,22 @@ class App extends Component {
         console.log(this.state.searchResults);
       })
       .catch(err => alert(err + "No Song Playing"))
+
+      this.setState({
+        QueuePlaylistTracks: []
+      })
+  
+      //gets array of tracks in the playlist
+      PlaylistTracks = spotifyApi.getPlaylistTracks("/me", "4YwThRIhvacUWlZ4gn7wPT")
+      .then((response) => {
+        response.items.forEach(e =>         
+          this.setState({
+          QueuePlaylistTracks: response.items
+        }))
+        console.log(this.state.QueuePlaylistTracks);
+      })
+      .catch(err => alert(err + "No Tracks"))
+
   }
 
   //This handles the changing input values in the search box
@@ -85,22 +105,47 @@ class App extends Component {
     trackId.push(event.currentTarget.id);
     //gets playlist id from logged in user
 
-    spotifyApi.getPlaylistTracks("/me", "4YwThRIhvacUWlZ4gn7wPT")
-    .then((response) => console.log(response));
+    var found = false;
+    var foundIndex = 0;
+    var currentPlayingIdex = 0;
 
-    spotifyApi.getUserPlaylists()
-    .then((response) => {
-      playlistId = response.items[0].id;
-      spotifyApi.addTracksToPlaylist("/me",playlistId, trackId);
-      console.log(playlistId);
-      console.log(trackId);
-      this.setSuccessMessage('Succesfully Added to Queue');
+    console.log("Initial Track ID: " + trackId);
+    console.log("first index of array: " + this.state.QueuePlaylistTracks[0]);//.track.uri);
+
+    for(var i = 0; i < this.state.QueuePlaylistTracks.length; i++){
+      if (this.state.QueuePlaylistTracks[i].track.uri == trackId){
+        foundIndex = i;
+        found = true;
+      }
+    }
+
+    console.log("found Index " + foundIndex);
+    console.log("current playing Index " + currentPlayingIdex);
+
+    if(!found){
+      spotifyApi.getUserPlaylists()
+      .then((response) => {
+        playlistId = response.items[0].id;
+        spotifyApi.addTracksToPlaylist("/me",playlistId, trackId);
+        console.log(playlistId);
+        console.log(trackId);
+        this.setSuccessMessage('Succesfully Added to Queue');
+        this.setState({
+          LastQueueItem: trackId,
+          searchTerm: '',
+          searchResults: []
+        })
+        console.log("Track Id " + this.state.LastQueueItem);
+
+      }); 
+    }
+    else if(found){
       this.setState({
+        LastQueueItem: trackId,
         searchTerm: '',
         searchResults: []
       })
-
-    });
+    }
   }
 
   renderTableData(){
