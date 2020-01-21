@@ -202,7 +202,7 @@ class App extends Component {
             <Row>
               <Col>
                 <div>
-                  <h3>Click a song to add it to a playlist</h3>
+                  <h3>Click a song to add it to the queue</h3>
                   <table id = 'mytableofrows' class = "table table-dark">
                     <tbody>
                       {this.renderTableData()}
